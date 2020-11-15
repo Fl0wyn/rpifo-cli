@@ -10,6 +10,8 @@ chmod +x rpifo.sh
 bash rpifo.sh
 ```
 
+***
+
 ## Français
 Script BASH pour la surveillance en temps réel du RaspberryPi
 ### Utilisation :
