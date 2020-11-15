@@ -16,7 +16,7 @@ RESET=$(echo -e "\e[0m")       # Annuler
 show_hote=$(hostname)
 show_ip=$(ip a show eth0 | awk 'NR == 3 {print substr($2,1, length($2)-3)}')
 show_os=$(echo "$(lsb_release -d | awk '{$1="";print}') - ($(cat /etc/debian_version))" | sed -e '1s/^.//')
-show_kernel=$(uname -sor)
+show_kernel=$(uname -srm)
 
 # Température
 # Temps d'utilisation
