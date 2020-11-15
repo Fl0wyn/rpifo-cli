@@ -1,33 +1,20 @@
 #!/bin/bash
 
-##############################################################
-## Script : Afficher et extraitre les informations d'un RPI ##
-##############################################################
-
 # Style
-COLOR=$(echo -e "\e[0m\e[32m") # Vert
-BOLD=$(echo -e "\e[0m\e[1m")   # Gras
-RESET=$(echo -e "\e[0m")       # Annuler
+COLOR=$(echo -e "\e[0m\e[32m") # Green
+BOLD=$(echo -e "\e[0m\e[1m")   # Bold
+RESET=$(echo -e "\e[0m")       # Cancel
 
-# Nom d'hôte
-# Adresse IP
-# Distribution
-# Version kernel
 show_hote=$(hostname)
 show_ip=$(ip a show eth0 | awk 'NR == 3 {print substr($2,1, length($2)-3)}')
 show_os=$(echo "$(lsb_release -d | awk '{$1="";print}') - ($(cat /etc/debian_version))" | sed -e '1s/^.//')
 show_kernel=$(uname -srm)
-
-# Température
-# Temps d'utilisation
-# Processus en cours
-# Charge CPU
 show_temp=$(vcgencmd measure_temp | egrep -o '[0-9]*\.[0-9]*')
 show_uptime=$(uptime -p | sed 's/up //g; s/hours/Heures/g; s/days/Jours/g; s/weeks/Semaines/g; s/month/Mois/g')
 show_tasks=$(top -b -n 1 | awk '/Tasks/ {print $2}')
 show_loadaverage=$(cat /proc/loadavg | awk '{print $1,$2,$3}' | tr '.' ',')
 
-# Disque SD
+# SD card
 exec_dfJ=$(df)
 exec_dfH=$(df -h)
 show_sd_totalJ=$(echo "$exec_dfJ" | awk '/root/ {print $2}')
@@ -39,11 +26,11 @@ show_sd_freeH=$(echo "$exec_dfH" | awk '/root/ {print $4}')
 show_sd_usedH=$(echo "$exec_dfH" | awk '/root/ {print $3}')
 show_sd_used_percent=$(echo "$exec_dfH" | awk '/root/ {print $5}')
 
-# Mémoire + Swap
+# Memory + Swap
 exec_freeJ=$(free --kilo)
 exec_freeH=$(free --kilo -h)
 
-# Mémoire
+# Memory
 show_mem_totalJ=$(echo "$exec_freeJ" | awk '/Mem:/ {print $2}')
 show_mem_freeJ=$(echo "$exec_freeJ" | awk '/Mem/ {print $4}')
 show_mem_usedJ=$(echo "$exec_freeJ" | awk '/Mem/ {print $3}')
@@ -77,9 +64,9 @@ echo "
     ${BOLD}Processus en cours     ${COLOR}${show_tasks}
     ${BOLD}Charge CPU             ${COLOR}${show_loadaverage}
     - - - - -
-    ${BOLD}Taille Total           ${COLOR}${show_sd_totalH}
-    ${BOLD}Taille Disponible      ${COLOR}${show_sd_freeH}
-    ${BOLD}Taille Utilisée        ${COLOR}${show_sd_usedH} (${show_sd_used_percent})
+    ${BOLD}SD Total               ${COLOR}${show_sd_totalH}
+    ${BOLD}SD Disponible          ${COLOR}${show_sd_freeH}
+    ${BOLD}SD Utilisée            ${COLOR}${show_sd_usedH} (${show_sd_used_percent})
     - - - - -
     ${BOLD}Mémoire Total          ${COLOR}${show_mem_totalH}
     ${BOLD}Mémoire Disponible     ${COLOR}${show_mem_freeH}
